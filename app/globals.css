@@ -44,6 +44,8 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  --color-accent: #d2691e; /* Burnt Orange */
+  --color-text-main: #2c1b18;
 }
 
 :root {
@@ -56,7 +58,7 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: #8d9b6a;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -82,13 +84,13 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: #f5f5dc;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  --primary: #4e342e;
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -121,6 +123,33 @@
 
 @utility bg-logo {
   background-image: url("/image/logo.png");
+}
+
+/* animation */
+
+@theme {
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  /* 2. Map them to Animation Utilities */
+  /* This automatically generates 'animate-appear' and 'animate-slide' */
+  --animate-appear: appear 0.5s ease-out forwards;
+  --animate-slide: slide 0.5s ease-out forwards;
 }
 
 @layer base {

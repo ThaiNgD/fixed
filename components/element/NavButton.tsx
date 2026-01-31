@@ -35,12 +35,12 @@ const NavButton: React.FC<NavButtonProps> = ({
       {href ? (
         <Link
           href={href}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-gray-900"
+          className="flex flex-col items-center text-secondary justify-center gap-1 px-3 py-2 text-sm hover:text-gray-900"
         >
           <Icon className="h-8 w-8" />
         </Link>
       ) : (
-        <div className="flex flex-col items-center justify-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
+        <div className="flex flex-col  text-secondary items-center justify-center gap-1 px-3 py-2 text-sm hover:text-gray-900">
           <Icon className="h-8 w-8" />
         </div>
       )}
