@@ -125,6 +125,12 @@
   background-image: url("/image/logo.png");
 }
 
+@utility bg-404 {
+  background-image: url("/image/404-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 /* animation */
 
 @theme {
@@ -139,9 +145,11 @@
 
   @keyframes slide {
     from {
+      visibility: hidden;
       transform: translateX(100%);
     }
     to {
+      visibility: visible;
       transform: translateX(0%);
     }
   }

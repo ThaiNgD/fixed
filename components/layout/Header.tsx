@@ -2,6 +2,7 @@ import { File, HomeIcon, UsersRound } from "lucide-react";
 import Link from "next/link";
 
 import NavButton from "@/components/element/NavButton";
+import { ModeToggle } from "../element/ModeToggle";
 const Header = () => {
   return (
     <header className="bg-primary animate-slide border-secondary h-16 p-4 border-b sticky top-0 z-20 ">
@@ -17,6 +18,7 @@ const Header = () => {
         <div className="flex items-center">
           <NavButton href="/tickets" icon={File} label="Docs" />
           <NavButton href="/customer" icon={UsersRound} label="Community" />
+          <ModeToggle />
         </div>
       </div>
     </header>
