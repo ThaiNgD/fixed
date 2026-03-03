@@ -5,6 +5,15 @@ import { Button } from "../ui/button";
 interface NavButtonProps {
   href?: string;
   icon: LucideIcon;
+  variant?:
+    | "link"
+    | "default"
+    | "ghost"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | null
+    | undefined;
   label: string;
   isShowText?: boolean;
   size?:
@@ -21,13 +30,14 @@ interface NavButtonProps {
 const NavButton: React.FC<NavButtonProps> = ({
   href,
   icon: Icon,
+  variant = "ghost",
   label,
   isShowText = false,
   size,
 }) => {
   return (
     <Button
-      variant="ghost"
+      variant={variant}
       size={size || "icon"}
       color="#8d9b6a"
       aria-label={label}
