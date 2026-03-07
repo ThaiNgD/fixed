@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 
@@ -16,18 +15,27 @@ export async function login(formData: FormData) {
   };
 
   console.log(data);
-  const result = await supabase.auth.signInWithPassword(data);
-
-  console.log(result);
-
-  const { error } = result;
+  const { error, data: account } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect("/error");
+    // redirect("/error");
+    return {
+      error: error?.message,
+      user: null,
+    };
+  } else if (account?.user?.identities?.length === 0) {
+    return {
+      error:
+        "This email is already registered with another provider. Please use a different email or sign in with the associated provider.",
+      user: null,
+    };
   }
 
   revalidatePath("/", "layout");
-  redirect("/account");
+  return {
+    error: null,
+    user: account?.user,
+  };
 }
 
 export async function signup(formData: FormData) {

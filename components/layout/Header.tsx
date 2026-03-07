@@ -2,8 +2,13 @@ import { File, HomeIcon, UsersRound } from "lucide-react";
 import Link from "next/link";
 
 import NavButton from "@/components/element/NavButton";
+import { createClient } from "@/lib/supabase/server";
 import { ModeToggle } from "../element/ModeToggle";
-const Header = () => {
+const Header = async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return (
     <header className="bg-primary animate-slide border-secondary h-16 p-4 border-b sticky top-0 z-20 ">
       <div className="flex h-8 my-auto item-center justify-between">
