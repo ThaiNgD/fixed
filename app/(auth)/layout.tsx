@@ -8,7 +8,7 @@ const layout = ({
 }>) => {
   return (
     <div className="w-dvw flex align-middle h-dvh bg-home-page">
-      <div className="m-auto h-[800px] w-xl bg-white p-10 rounded-2xl">
+      <div className="m-auto h-fit w-xl bg-white p-10 rounded-2xl">
         <div className="border-primary mb-4 rounded-2xl bg-amber-50 shadow-2xs flex gap-2 p-2 align-middle justify-center">
           <NavButton
             icon={LogIn}

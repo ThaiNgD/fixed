@@ -268,9 +268,6 @@ export default function Page() {
           <Button type="button" variant="outline" onClick={() => form.reset()}>
             Login by Github <Github />
           </Button>
-          <Button type="button" variant="outline" form="bug-report-form">
-            Login by Google
-          </Button>
         </Field>
       </CardFooter>
     </Card>
