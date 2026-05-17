@@ -19,7 +19,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Facebook, Github } from "lucide-react";
+import { Github } from "lucide-react";
 import { login } from "../actions";
 
 const formSchema = z.object({
@@ -30,7 +30,7 @@ const formSchema = z.object({
   username: z
     .string()
     .min(6, "Username must be at least 6 characters.")
-    .max(20, "Username must be at most 20 characters."),
+    .max(64, "Username must be at most 64 characters."),
 });
 
 export default function Page() {
@@ -141,20 +141,6 @@ export default function Page() {
         <Field orientation="vertical">
           <Button type="button" variant="outline" onClick={() => form.reset()}>
             Login by Github <Github />
-          </Button>
-          <Button type="button" variant="outline" form="bug-report-form">
-            Login by Google
-          </Button>
-          <Button
-            className="bg-blue-600 text-white hover:bg-white hover:text-blue-600"
-            type="button"
-            variant="outline"
-            form="bug-report-form"
-          >
-            Login by Facebook <Facebook />
-          </Button>
-          <Button type="button" variant="outline" form="bug-report-form">
-            Login by Github
           </Button>
         </Field>
       </CardFooter>

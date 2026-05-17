@@ -59,8 +59,6 @@ export async function signup(formData: FormData) {
     },
   });
 
-  console.log(error, data);
-
   if (error) {
     // redirect("/error");
     return {
@@ -73,6 +71,29 @@ export async function signup(formData: FormData) {
         "This email is already registered with another provider. Please use a different email or sign in with the associated provider.",
       user: null,
     };
+  }
+
+  const { data: existingUser } = await supabase
+    .from("user_profiles")
+    .select("*")
+    .eq("email", credentials?.email)
+    .limit(1)
+    .single();
+
+  if (!existingUser) {
+    const { error: profileError } = await supabase
+      .from("user_profiles")
+      .insert({
+        email: data?.user?.email,
+        username: data?.user?.user_metadata?.username,
+      });
+
+    if (profileError) {
+      return {
+        error: profileError.message,
+        user: null,
+      };
+    }
   }
 
   revalidatePath("/", "layout");
