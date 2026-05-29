@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-export function ModeToggle() {
+export default function ModeToggle() {
   const { setTheme } = useTheme();
   return (
     <DropdownMenu>

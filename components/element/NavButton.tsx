@@ -51,12 +51,12 @@ const NavButton: React.FC<NavButtonProps> = ({
           className="flex flex-row items-center text-secondary justify-center gap-1 px-3 py-2 text-sm hover:text-gray-900"
         >
           <Icon className="h-8 w-8" />
-          <span>{isShowText ? label : ""}</span>
+          {isShowText ? <span>{label}</span> : ""}
         </Link>
       ) : (
         <div className="flex flex-row text-secondary items-center justify-center gap-1 px-3 py-2 text-sm hover:text-gray-900">
           <Icon className="h-8 w-8" />
-          <span>{isShowText ? label : ""}</span>
+          {isShowText ? <span>{label}</span> : ""}
         </div>
       )}
     </Button>
