@@ -19,10 +19,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Github } from "lucide-react";
-import { redirect } from "next/navigation";
-import { useTransition } from "react";
-import { login, signInWithGitHub } from "../actions";
+import { login } from "../actions";
 
 const formSchema = z.object({
   password: z
@@ -38,7 +35,6 @@ const formSchema = z.object({
 export default function Page() {
   const form = useForm({
     defaultValues: {
-      password: "",
       username: "",
     },
     validators: {
@@ -48,7 +44,6 @@ export default function Page() {
       console.log(value);
       const formData = new FormData();
       formData.append("username", value.username);
-      formData.append("password", value.password);
       const result = await login(formData);
 
       if (result.error) {
@@ -60,20 +55,12 @@ export default function Page() {
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-
-  const handleLoginByGithub = () => {
-    startTransition(async () => {
-      await signInWithGitHub();
-    });
-  };
-
   return (
     <Card className="w-full h-fit sm:max-w-lg">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Forgot Password</CardTitle>
         <CardDescription>
-          You can login this by social media or your own account.
+          Enter your username or email address to reset your password.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -112,31 +99,6 @@ export default function Page() {
                 );
               }}
             />
-            <form.Field
-              name="password"
-              children={(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
-                return (
-                  <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                      placeholder="Please enter your password"
-                      autoComplete="off"
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                  </Field>
-                );
-              }}
-            />
           </FieldGroup>
         </form>
       </CardContent>
@@ -147,34 +109,7 @@ export default function Page() {
             variant="outline"
             onClick={() => form.handleSubmit()}
           >
-            Log in
-          </Button>
-        </Field>
-        <Field orientation="vertical">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => handleLoginByGithub()}
-            disabled={isPending}
-          >
-            {isPending ? (
-              <>Loading...</>
-            ) : (
-              <>
-                Login by Github
-                <Github />
-              </>
-            )}
-          </Button>
-        </Field>
-        <Field orientation="vertical">
-          <Button
-            type="button"
-            variant="link"
-            className="hover:cursor-pointer items-start !py-0 hover:text-[#8d9b6a]"
-            onClick={() => redirect("/forgot-password")}
-          >
-            Forgot password
+            Confirm
           </Button>
         </Field>
       </CardFooter>

@@ -1,11 +1,19 @@
 import NavButton from "@/components/element/NavButton";
 import { LogIn, UserRoundPlus } from "lucide-react";
+import { redirect } from "next/navigation";
+import { getUserSession } from "./actions";
 
-const layout = ({
+const layout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const session = await getUserSession();
+  const user = session?.user;
+  if (user) {
+    redirect("/home");
+  }
+
   return (
     <div className="w-dvw flex align-middle h-dvh bg-home-page">
       <div className="m-auto h-fit w-xl bg-white p-10 rounded-2xl">
