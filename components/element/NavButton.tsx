@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 interface NavButtonProps {
   href?: string;
   icon: LucideIcon;
+  disabled?: boolean;
   variant?:
     | "link"
     | "default"
@@ -25,23 +26,28 @@ interface NavButtonProps {
     | "icon-xs"
     | "icon-sm"
     | "icon-lg";
+  style?: React.CSSProperties;
 }
 
 const NavButton: React.FC<NavButtonProps> = ({
   href,
+  disabled = false,
   icon: Icon,
   variant = "ghost",
   label,
   isShowText = false,
   size,
+  style,
 }) => {
   return (
     <Button
+      disabled={disabled}
       variant={variant}
       size={size || "icon"}
       color="#8d9b6a"
       aria-label={label}
       title={label}
+      style={style}
       className="flex flex-row w-fit items-center justify-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-gray-900"
       asChild
     >

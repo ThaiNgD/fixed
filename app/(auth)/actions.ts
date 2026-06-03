@@ -12,7 +12,7 @@ export async function logout() {
   if (error) {
     console.error("Error signing out:", error);
   } else {
-    redirect("/auth/sign-in");
+    redirect("/sign-in");
   }
   revalidatePath("/", "layout");
 }

@@ -19,7 +19,6 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Github } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useTransition } from "react";
 import { login, signInWithGitHub } from "../actions";
@@ -157,14 +156,7 @@ export default function Page() {
             onClick={() => handleLoginByGithub()}
             disabled={isPending}
           >
-            {isPending ? (
-              <>Loading...</>
-            ) : (
-              <>
-                Login by Github
-                <Github />
-              </>
-            )}
+            {isPending ? <>Loading...</> : <>Login by Github</>}
           </Button>
         </Field>
         <Field orientation="vertical">
