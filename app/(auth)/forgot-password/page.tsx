@@ -19,13 +19,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { login } from "../actions";
+import { toast } from "sonner";
+import { forgotPassword } from "../actions";
 
 const formSchema = z.object({
-  password: z
-    .string()
-    .min(5, "Bug password must be at least 5 characters.")
-    .max(32, "Bug password must be at most 32 characters."),
   username: z
     .string()
     .min(6, "Username must be at least 6 characters.")
@@ -44,13 +41,13 @@ export default function Page() {
       console.log(value);
       const formData = new FormData();
       formData.append("username", value.username);
-      const result = await login(formData);
-
+      const result = await forgotPassword(formData);
       if (result.error) {
-        alert(result.error);
-      }
-      if (result.user) {
-        window.location.href = "/home";
+        toast.error(result.error);
+      } else {
+        toast.success(
+          "Password reset instructions have been sent to your email.",
+        );
       }
     },
   });

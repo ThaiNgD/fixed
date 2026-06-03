@@ -13,7 +13,7 @@ import {
 import { User } from "@supabase/supabase-js";
 
 export default function AccountDropdown({ user }: { user: User | null }) {
-  return (
+  return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger className="w-fit" asChild>
         <Button variant="outline">{user?.email || "Profile"}</Button>
@@ -35,5 +35,5 @@ export default function AccountDropdown({ user }: { user: User | null }) {
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  ) : null;
 }

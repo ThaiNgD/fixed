@@ -19,60 +19,69 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { redirect } from "next/navigation";
-import { useTransition } from "react";
-import { login, signInWithGitHub } from "../actions";
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { resetPassword } from "../actions";
 
-const formSchema = z.object({
-  password: z
-    .string()
-    .min(5, "Bug password must be at least 5 characters.")
-    .max(32, "Bug password must be at most 32 characters."),
-  username: z
-    .string()
-    .min(6, "Username must be at least 6 characters.")
-    .max(64, "Username must be at most 64 characters."),
-});
+const passwordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters.")
+      .max(32, "Password must be at most 32 characters.")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+      .regex(/[0-9]/, "Password must contain at least one number.")
+      .regex(
+        /[^a-zA-Z0-9]/,
+        "Password must contain at least one special character.",
+      )
+      .nonempty("Password is required."),
 
+    confirmPassword: z.string().nonempty("Please confirm your password."),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
 export default function Page() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const form = useForm({
     defaultValues: {
       password: "",
-      username: "",
+      confirmPassword: "",
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: passwordSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
       const formData = new FormData();
-      formData.append("username", value.username);
       formData.append("password", value.password);
-      const result = await login(formData);
+      formData.append("confirmPassword", value.confirmPassword);
+      const result = await resetPassword(
+        formData,
+        searchParams.get("code") as string,
+      );
 
       if (result.error) {
-        alert(result.error);
-      }
-      if (result.user) {
-        window.location.href = "/home";
+        toast.error(result.error);
+      } else {
+        router.push("/sign-in");
+        toast.success(
+          "Password reset successful! Please sign in with your new password.",
+        );
       }
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-
-  const handleLoginByGithub = () => {
-    startTransition(async () => {
-      await signInWithGitHub();
-    });
-  };
-
   return (
     <Card className="w-full h-fit sm:max-w-lg">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Reset Password</CardTitle>
         <CardDescription>
-          You can login this by social media or your own account.
+          Enter your username or email address to reset your password.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -84,33 +93,6 @@ export default function Page() {
           }}
         >
           <FieldGroup>
-            <form.Field
-              name="username"
-              children={(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
-                return (
-                  <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>
-                      Username / Gmail
-                    </FieldLabel>
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                      placeholder="Please enter your username or email address"
-                      autoComplete="off"
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                  </Field>
-                );
-              }}
-            />
             <form.Field
               name="password"
               children={(field) => {
@@ -136,6 +118,33 @@ export default function Page() {
                 );
               }}
             />
+            <form.Field
+              name="confirmPassword"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name}>
+                      Confirm Password
+                    </FieldLabel>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      placeholder="Please confirm your password"
+                      autoComplete="off"
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
+            />
           </FieldGroup>
         </form>
       </CardContent>
@@ -146,27 +155,7 @@ export default function Page() {
             variant="outline"
             onClick={() => form.handleSubmit()}
           >
-            Log in
-          </Button>
-        </Field>
-        <Field orientation="vertical">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => handleLoginByGithub()}
-            disabled={isPending}
-          >
-            {isPending ? <>Loading...</> : <>Login by Github</>}
-          </Button>
-        </Field>
-        <Field orientation="vertical">
-          <Button
-            type="button"
-            variant="link"
-            className="hover:cursor-pointer items-start !py-0 hover:text-[#8d9b6a]"
-            onClick={() => redirect("/forgot-password")}
-          >
-            Forgot password
+            Confirm
           </Button>
         </Field>
       </CardFooter>

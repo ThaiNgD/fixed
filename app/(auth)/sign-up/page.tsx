@@ -18,7 +18,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useForm } from "@tanstack/react-form";
-import { Github } from "lucide-react";
 import { toast } from "sonner";
 import * as z from "zod";
 import { signup } from "../actions";
@@ -266,7 +265,7 @@ export default function Page() {
           </Button>
           <span className="w-full text-center text-primary underline">or</span>
           <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Login by Github <Github />
+            Login by Github
           </Button>
         </Field>
       </CardFooter>

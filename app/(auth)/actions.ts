@@ -8,7 +8,12 @@ import { redirect } from "next/navigation";
 
 export async function logout() {
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error("Error signing out:", error);
+  } else {
+    redirect("/sign-in");
+  }
   revalidatePath("/", "layout");
 }
 
@@ -139,4 +144,72 @@ export const signInWithGitHub = async () => {
   } else if (data.url) {
     redirect(data.url);
   }
+};
+
+export const forgotPassword = async (formData: FormData) => {
+  const supabase = await createClient();
+  const loginIdentifier = formData.get("username") as string;
+  const origin = (await headers()).get("origin") || "";
+
+  if (!loginIdentifier) {
+    return { error: "Please provide an email or username." };
+  }
+
+  let targetEmail = loginIdentifier;
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginIdentifier);
+
+  if (!isEmail) {
+    const { data: profile, error: lookupError } = await supabase
+      .from("profiles")
+      .select("email")
+      .eq("username", loginIdentifier)
+      .single();
+
+    if (lookupError || !profile?.email) {
+      console.error("User not found via username lookup");
+      return { error: "No account found with that username." };
+    }
+
+    targetEmail = profile.email;
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(targetEmail, {
+    redirectTo: `${origin}/reset-password`,
+  });
+
+  console.log(error);
+
+  if (error) {
+    console.error("Error sending password reset email:", error);
+    return { error: error.message };
+  }
+
+  return { error: null };
+};
+
+export const resetPassword = async (formData: FormData, code: string) => {
+  const supabase = await createClient();
+  const password = formData.get("password") as string;
+
+  const { error: CodeError } = await supabase.auth.exchangeCodeForSession(code);
+  if (CodeError) {
+    console.error("Invalid or expired access token:", CodeError);
+    return {
+      error:
+        "Invalid or expired token. Please try resetting your password again.",
+    };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password,
+  });
+  if (error) {
+    console.error("Error resetting password:", error);
+    return {
+      error: error.message,
+    };
+  }
+  return {
+    error: null,
+  };
 };
