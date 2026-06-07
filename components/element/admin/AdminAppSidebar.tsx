@@ -4,6 +4,7 @@ import {
   IconChartBar,
   IconDashboard,
   IconDatabase,
+  IconDeviceGamepad3,
   IconFileAi,
   IconFileDescription,
   IconFileWord,
@@ -14,6 +15,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
+  IconSettingsSpark,
   IconUsers,
 } from "@tabler/icons-react";
 import * as React from "react";
@@ -58,6 +60,16 @@ const data = {
       title: "Projects",
       url: "#",
       icon: IconFolder,
+    },
+    {
+      title: "Parts",
+      url: "/parts",
+      icon: IconSettingsSpark,
+    },
+    {
+      title: "Services",
+      url: "/services",
+      icon: IconDeviceGamepad3,
     },
     {
       title: "Team",
