@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 export function BackButton({
   title,
   url,
+  isBack = true,
   className,
 }: {
   title: string;
   url: string;
+  isBack?: boolean;
   className?: string;
 }) {
   const router = useRouter();
@@ -18,12 +20,14 @@ export function BackButton({
     <div
       className={`flex items-center gap-1 p-6 text-2xl font-bold ${className}`}
     >
-      <a
-        onClick={() => router.push(url)}
-        className="text-muted-foreground hover:text-foreground hover:cursor-pointer h-6 w-6 mt-1 font-bold"
-      >
-        <ChevronLeft />
-      </a>
+      {isBack && (
+        <a
+          onClick={() => router.push(url)}
+          className="text-muted-foreground hover:text-foreground hover:cursor-pointer h-6 w-6 mt-1 font-bold"
+        >
+          <ChevronLeft />
+        </a>
+      )}
       <span>{title}</span>
     </div>
   );
