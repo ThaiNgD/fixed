@@ -10,7 +10,6 @@ import {
   IconFileWord,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
   IconListDetails,
   IconReport,
   IconSearch,
@@ -43,22 +42,22 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: IconDashboard,
     },
     {
       title: "Lifecycle",
-      url: "#",
+      url: "/lifecycle",
       icon: IconListDetails,
     },
     {
       title: "Analytics",
-      url: "#",
+      url: "/analytics",
       icon: IconChartBar,
     },
     {
       title: "Projects",
-      url: "#",
+      url: "/projects",
       icon: IconFolder,
     },
     {
@@ -73,7 +72,7 @@ const data = {
     },
     {
       title: "Team",
-      url: "#",
+      url: "/staff",
       icon: IconUsers,
     },
   ],
@@ -172,8 +171,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <a href="#">
-                <IconInnerShadowTop className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <img
+                  src={"/image/logo.png"}
+                  alt="logo"
+                  width={40}
+                  height={40}
+                />
+                <span className="text-base font-semibold">Fixed</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
